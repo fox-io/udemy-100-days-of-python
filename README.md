@@ -18,3 +18,13 @@ Tip Calculator
 2. Ask user how many people are paying.
 3. Ask user what percent to tip.
 4. Display how much each person should pay.
+
+## Day 3
+Treasure Island
+1. Choose your own adventure with a preset path to winning.
+2. Ask user "left or right".
+    1. Only continue with "left".
+4. Ask user "swim or wait".
+    1. Only allow "wait".
+5. Ask user "Red, Blue, or Yellow".
+    1. Only allow "Yellow".
