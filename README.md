@@ -63,3 +63,17 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
   
     * Rock, Paper, Scissors
+
+## Day 5
+
+* ### Practice
+
+    * for_loops
+    * average_height
+    * high_score
+    * add_evens
+    * fizzbuzz
+    
+* ### Project
+
+    * Password Generator
