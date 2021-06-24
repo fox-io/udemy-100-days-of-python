@@ -48,3 +48,18 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
          1. Only continue with "wait".
       5. Ask user "Red, Blue, or Yellow".
          1. Only win with "Yellow".
+    
+## Day 4
+
+* ### Practice
+
+    * Random Integers
+    * Random Floats
+    * Coin Flip
+    * List Functions
+    * Banker's Roulette
+    * Treasure Map
+    
+* ### Project
+  
+    * Rock, Paper, Scissors
