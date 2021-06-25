@@ -77,3 +77,14 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Password Generator
+
+## Day 6
+
+* ### Practice
+
+    * Define and call functions
+
+* ### Project
+
+    * Must complete elsewhere
+    
