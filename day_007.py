@@ -1,7 +1,7 @@
 """
-Day 7
+Day 5 Project: Hangman Game
 
-Hangman
+(c)2021 John Mann <gitlab.fox-io@foxdata.io>
 """
 import random
 
@@ -59,10 +59,6 @@ def update_gallows(man):
     return new_gallows
 
 
-def show_game_board():
-    print("Hangman")
-
-
 def mask_random_word():
     """
     mask_random_word()
@@ -113,6 +109,7 @@ def is_word_guessed():
         if available_letters[random_word[position]]:
             return False
     return True
+
 
 # Main Game Loop
 # Game Setup
