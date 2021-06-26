@@ -79,43 +79,79 @@ Prints random password with those characteristics.
 """
 
 
+class Password:
+    # Variables for password construction
+    num_letters = 0     # Total letters to generate in the password.
+    num_symbols = 0     # Total symbols to generate in the password.
+    num_numbers = 0     # Total numbers to generate in the password.
+    num_characters = 0  # Total characters in the password
+
+    # Character sets
+    allowed_letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+                       "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
+                       "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    allowed_symbols = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
+    allowed_numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+    # Output placeholder
+    generated_password = ""
+
+    def get_password_layout(self):
+        # Loop until we get at least one character to generate.
+        while self.num_characters == 0:
+            # Ask user for how many of each character type to include in the password.
+            self.num_letters = int(input("How many letters would you like in your password?\n: "))
+            self.num_symbols = int(input("How many symbols would you like in your password?\n: "))
+            self.num_numbers = int(input("How many numbers would you like in your password?\n: "))
+            # Save the total number of characters to a variable for use during generation.
+            self.num_characters = self.num_letters + self.num_symbols + self.num_numbers
+            # Give user an informative statement if they tried to allow for a zero-length password.
+            if self.num_characters == 0:
+                print("Try Again. Please enter at least one character for the password to be generated.")
+
+    def get_random_character(self, character_list):
+        return character_list[random.randint(0, len(character_list) - 1)]
+
+    def generate_password(self):
+        # Use our length to loop through the password generation.
+        for character_position in range(0, self.num_characters):
+            # Flag used for continuing to loop until we have chosen a character for the current character position.
+            character_position_filled = False
+            while not character_position_filled:
+                # Randomly choose a character type for the current character position.
+                # 1 = letter, 2 = symbol, 3 = number
+                character_position_type = random.randint(1, 3)
+                if character_position_type == 1:
+                    # Only add letters if we still have letters to add.
+                    if self.num_letters > 0:
+                        # Randomly choose a letter from allowed letters
+                        random_letter = self.get_random_character(self.allowed_letters)
+                        # Add letter to password
+                        self.generated_password = self.generated_password + random_letter
+                        self.num_letters -= 1
+                        character_position_filled = True
+                elif character_position_type == 2:
+                    # Add symbols if we still need symbols
+                    if self.num_symbols > 0:
+                        self.generated_password = self.generated_password + \
+                                                  self.get_random_character(self.allowed_symbols)
+                        self.num_symbols -= 1
+                        character_position_filled = True
+                elif character_position_type == 3:
+                    # Add numbers if we still need numbers
+                    if self.num_numbers > 0:
+                        self.generated_password = self.generated_password +\
+                                                  self.get_random_character(self.allowed_numbers)
+                        self.num_numbers -= 1
+                        character_position_filled = True
+
+
 def generate_password():
-    print("Password Generator")
-    num_chars = int(input("How many letters in your password?"))
-    num_sym = int(input("How many symbols in your password?"))
-    num_num = int(input("How many numbers in your password?"))
-    characters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-                  "U", "V", "W", "X", "Y", "Z"]
-    symbols = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
-    numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    password = ""
-    total_characters = num_chars + num_sym + num_num
-    for position in range(0, total_characters):
-        position_filled = False
-        while not position_filled:
-            position_type = random.randint(1, 3)
-            # If this position type is a letter, make sure we still need letters, then add it to the password.
-            if position_type == 1:
-                if num_chars > 0:
-                    # Use random upper/lowercase
-                    character_case = random.randint(1, 2)
-                    if character_case == 1:
-                        password = password + characters[random.randint(0, len(characters) - 1)].lower()
-                    else:
-                        password = password + characters[random.randint(0, len(characters) - 1)]
-                    num_chars = num_chars - 1
-                    position_filled = True
-            elif position_type == 2:
-                if num_sym > 0:
-                    password = password + symbols[random.randint(0, len(symbols) - 1)]
-                    num_sym = num_sym - 1
-                    position_filled = True
-            elif position_type == 3:
-                if num_num > 0:
-                    password = password + numbers[random.randint(0, len(numbers) - 1)]
-                    num_num = num_num - 1
-                    position_filled = True
-    print(password)
+    print("Password Generator\n------------------")
+    my_password = Password()
+    my_password.get_password_layout()
+    my_password.generate_password()
+    print(my_password.generated_password)
 
 
 generate_password()

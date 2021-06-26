@@ -88,3 +88,11 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 
     * Must complete elsewhere
     
+    
+## Day 7
+
+* ### Practice
+
+* ### Project
+
+    * Hangman
