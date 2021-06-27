@@ -114,6 +114,9 @@ def main():
             cc.input_message = input(f"Enter the message to {cc.mode}.\n: ")
             # Get offset from user
             cc.offset = int(input("Enter the cipher offset.\n: "))
+            # Ensure offset is within the bounds of our alphabet's length.
+            if cc.offset > len(cc.alphabet):
+                cc.offset = cc.offset % len(cc.alphabet)
             # Output the result of the cipher
             print(f"Your result is: {cc.cipher()}")
         elif menu_command == "quit":
