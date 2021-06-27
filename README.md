@@ -96,3 +96,10 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Hangman
+    
+
+## Day 8
+
+* ### Project
+
+    * Caesar Cipher
