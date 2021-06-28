@@ -103,3 +103,15 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Caesar Cipher
+    
+
+## Day 9
+
+* ### Practice
+    
+    * Dict looping/processing
+    * Dict updating
+    
+* ### Project
+
+    * Blind Auction
