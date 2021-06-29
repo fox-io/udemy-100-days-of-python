@@ -88,7 +88,6 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 
     * Must complete elsewhere
     
-    
 ## Day 7
 
 * ### Practice
@@ -97,7 +96,6 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 
     * Hangman
     
-
 ## Day 8
 
 * ### Project
@@ -115,3 +113,13 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Blind Auction
+    
+## Day 10
+
+* ### Practice
+
+    * Days in month/leap year
+    
+* ### Project
+
+    * Calculator
