@@ -26,6 +26,7 @@ class NumberGuess:
     MSG_TOO_HIGH = "Your guess was too high. Try again."
     MSG_ENTER_GUESS = "What is your guess?\n: "
     MSG_MENU = "[1] Play Easy Mode\n[2] Play Hard Mode\n[0] Quit\n: "
+    MSG_OUT_OF_GUESSES = "You ran out of guesses!"
     MENU_EASY = 1
     MENU_HARD = 2
     EASY = 10
@@ -98,7 +99,7 @@ def main():
             # Both winners and out of guesses end up here,
             # so we check for which state we are in.
             if not game.is_winner:
-                print("You ran out of guesses!")
+                print(game.MSG_OUT_OF_GUESSES)
                 print(f"The number was {game.chosen_number}")
 
             wait_for_user()
