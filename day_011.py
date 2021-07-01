@@ -8,11 +8,11 @@ Day 11 Project: Blackjack
 import random
 
 # Reference variables for our card_deck
-full = 0
-draw = 1
-discard = 2
-player = 3
-dealer = 4
+FULL = 0
+DRAW = 1
+DISCARD = 2
+PLAYER = 3
+DEALER = 4
 
 
 class Blackjack:
@@ -31,40 +31,40 @@ class Blackjack:
         self.reset_deck()
 
     def reset_deck(self):
-        self.deck[draw] = list(self.deck[full])
-        self.deck[discard] = []
-        self.deck[player] = []
-        self.deck[dealer] = []
+        self.deck[DRAW] = list(self.deck[FULL])
+        self.deck[DISCARD] = []
+        self.deck[PLAYER] = []
+        self.deck[DEALER] = []
 
     def draw_card(self, hand):
-        card_index = random.randint(0, len(self.deck[draw]) - 1)
+        card_index = random.randint(0, len(self.deck[DRAW]) - 1)
         if hand == "player":
-            self.deck[player].append(self.deck[draw].pop(card_index))
+            self.deck[PLAYER].append(self.deck[DRAW].pop(card_index))
         elif hand == "dealer":
-            self.deck[dealer].append(self.deck[draw].pop(card_index))
+            self.deck[DEALER].append(self.deck[DRAW].pop(card_index))
 
     def visible_hand(self, hand):
         visible = ""
-        for card_position in range(0, len(self.deck[player]) if hand == "player" else len(self.deck[dealer])):
+        for card_position in range(0, len(self.deck[PLAYER]) if hand == "player" else len(self.deck[DEALER])):
             if hand == "dealer" and card_position > 0:
                 visible = visible + "[?] "
             elif hand == "dealer" and card_position == 0:
-                visible = visible + self.deck[dealer][card_position] + " "
+                visible = visible + self.deck[DEALER][card_position] + " "
             elif hand == "player":
-                visible = visible + self.deck[player][card_position] + " "
+                visible = visible + self.deck[PLAYER][card_position] + " "
         return visible
 
     def hand_total(self, hand):
         num_aces = 0
         total = 0
 
-        for card_position in range(0, len(self.deck[player]) if hand == "player" else len(self.deck[dealer])):
+        for card_position in range(0, len(self.deck[PLAYER]) if hand == "player" else len(self.deck[DEALER])):
 
             # Make reference to current card
             if hand == "dealer":
-                current_card = self.deck[dealer][card_position]
+                current_card = self.deck[DEALER][card_position]
             else:
-                current_card = self.deck[player][card_position]
+                current_card = self.deck[PLAYER][card_position]
 
             # Determine value of current card
             if current_card == "A":
