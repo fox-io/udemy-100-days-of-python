@@ -1,6 +1,6 @@
 """
 -----
-Day 11 Project: Number Guess
+Day 12 Project: Number Guess
 -----
 Computer chooses a number between 1 and 100.
 User is given an amount of chances to guess the number.
