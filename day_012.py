@@ -2,13 +2,12 @@
 -----
 Day 11 Project: Number Guess
 -----
+Computer chooses a number between 1 and 100.
+User is given an amount of chances to guess the number.
 
 (c)2021 John Mann <gitlab.fox-io@foxdata.io>
 """
-import random
-
-MSG_INVALID_INPUT = "Please choose a valid menu option."
-MSG_ENTER_TO_CONTINUE = "Press enter to continue..."
+from random import randint
 
 
 class NumberGuess:
@@ -21,6 +20,8 @@ class NumberGuess:
 | |\\  | |_| | | | | | | |_) |  __/ |    | |__| | |_| |  __/\\__ \\__ \\
 |_| \\_|\\__,_|_| |_| |_|_.__/ \\___|_|     \\_____|\\__,_|\\___||___/___/
     """
+    MSG_INVALID_INPUT = "Please choose a valid menu option."
+    MSG_ENTER_TO_CONTINUE = "Press enter to continue..."
     MSG_WINNER = "You guessed the correct answer!"
     MSG_TOO_LOW = "Your guess was too low. Try again."
     MSG_TOO_HIGH = "Your guess was too high. Try again."
@@ -29,28 +30,42 @@ class NumberGuess:
     MSG_OUT_OF_GUESSES = "You ran out of guesses!"
     MENU_EASY = 1
     MENU_HARD = 2
-    EASY = 10
-    HARD = 5
+    EASY_GUESSES = 10
+    HARD_GUESSES = 5
 
     # Class variables
     lower_bound = 1
     higher_bound = 100
     chosen_number = 0
     guesses_remaining = 0
-    is_winner = ""
+    is_winner = False
 
     def __init__(self):
         # Show logo
         print(self.MSG_LOGO)
 
     def choose_random_number(self):
+        """
+        Randomly selects a number in provided range.
+        """
         self.is_winner = False
-        self.chosen_number = random.randint(self.lower_bound, self.higher_bound)
+        self.chosen_number = randint(self.lower_bound, self.higher_bound)
 
     def set_difficulty(self, new_difficulty):
+        """
+        Sets our remaining guesses to the quantity defined in class consts.
+
+        :param new_difficulty: integer
+        """
         self.guesses_remaining = new_difficulty
 
     def user_guess(self):
+        """
+        Asks user for their guess. Removes one guess from their remaining count.
+        Returns display text for winner, too low, or too high.
+
+        :return: string
+        """
         print(f"The number is between {self.lower_bound} and {self.higher_bound}.")
         print(f"You have {self.guesses_remaining} guesses remaining.")
         the_guess = int(input(self.MSG_ENTER_GUESS))
@@ -63,9 +78,11 @@ class NumberGuess:
         elif the_guess > self.chosen_number:
             return self.MSG_TOO_HIGH
 
-
-def wait_for_user():
-    input(MSG_ENTER_TO_CONTINUE)
+    def wait_for_user(self):
+        """
+        Pauses processing until user presses enter as instructed.
+        """
+        input(self.MSG_ENTER_TO_CONTINUE)
 
 
 def main():
@@ -77,9 +94,9 @@ def main():
         if menu_command == game.MENU_EASY or menu_command == game.MENU_HARD:
             # Set difficulty
             if menu_command == game.MENU_EASY:
-                game.set_difficulty(game.EASY)
+                game.set_difficulty(game.EASY_GUESSES)
             else:
-                game.set_difficulty(game.HARD)
+                game.set_difficulty(game.HARD_GUESSES)
 
             # Choose the random number
             game.choose_random_number()
@@ -102,13 +119,13 @@ def main():
                 print(game.MSG_OUT_OF_GUESSES)
                 print(f"The number was {game.chosen_number}")
 
-            wait_for_user()
+            game.wait_for_user()
         elif menu_command == 0:
             # Exit program
             return
         else:
             # Handle invalid input
-            print(MSG_INVALID_INPUT)
+            print(game.MSG_INVALID_INPUT)
 
 
 # Main program
