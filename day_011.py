@@ -13,14 +13,15 @@ DRAW = 1
 DISCARD = 2
 PLAYER = 3
 DEALER = 4
+# ♠♥♦♣
 
 
 class Blackjack:
     deck = [
-        {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K",
-         "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K",
-         "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K",
-         "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"},
+        {"A♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠",
+         "A♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "J♥", "Q♥", "K♥",
+         "A♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "J♦", "Q♦", "K♦",
+         "A♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "J♣", "Q♣", "K♣"},
         [],
         [],
         [],
@@ -67,14 +68,14 @@ class Blackjack:
                 current_card = self.deck[PLAYER][card_position]
 
             # Determine value of current card
-            if current_card == "A":
+            if current_card[0] == "A":
                 # We use 11 for aces, but save a counter in case we need to convert them to 1 based on hand total
                 card_value = 11
                 num_aces += 1
-            elif current_card == "J" or current_card == "Q" or current_card == "K":
+            elif current_card[0] == "J" or current_card[0] == "Q" or current_card[0] == "K":
                 card_value = 10
             else:
-                card_value = int(current_card)
+                card_value = int(current_card[:-1])
             total += card_value
 
         if total > 21 and num_aces > 0:
