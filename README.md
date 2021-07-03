@@ -135,3 +135,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Number Guess
+    
+## Day 13
+
+* ### Practice
+
+    * Debugging
