@@ -14,6 +14,12 @@ they would like to play again.
 """
 from random import randint
 
+PRESS_ENTER = "Press enter to continue..."
+MENU = "[1] Play\n[0] Quit\n: "
+INVALID_INPUT = "Please choose a menu option to continue."
+PLAY_GAME = 1
+QUIT_GAME = 0
+
 
 class HigherLowerGame:
     # Reference consts
@@ -22,6 +28,20 @@ class HigherLowerGame:
     SCORE = 2
     PERSONALITY_A = 3
     PERSONALITY_B = 4
+    USER_GUESS = 5
+    IS_WINNER = 6
+    PROMPT_WHICH_IS_HIGHER = "Which of these two personalities have more followers? (A or B)\n: "
+    LOGO = """
+    ╦ ╦┬┌─┐┬ ┬┌─┐┬─┐
+    ╠═╣││ ┬├─┤├┤ ├┬┘
+    ╩ ╩┴└─┘┴ ┴└─┘┴└─
+        ┌─┐┬─┐      
+        │ │├┬┘      
+        └─┘┴└─      
+    ╦  ┌─┐┬ ┬┌─┐┬─┐ 
+    ║  │ ││││├┤ ├┬┘ 
+    ╩═╝└─┘└┴┘└─┘┴└─ 
+    """
 
     data = [
         # UNUSED_PERSONALITIES
@@ -343,21 +363,6 @@ class HigherLowerGame:
         pass
 
     @staticmethod
-    def show_logo():
-        """Prints ASCII art of the game's name."""
-        print("""
-╦ ╦┬┌─┐┬ ┬┌─┐┬─┐
-╠═╣││ ┬├─┤├┤ ├┬┘
-╩ ╩┴└─┘┴ ┴└─┘┴└─
-    ┌─┐┬─┐      
-    │ │├┬┘      
-    └─┘┴└─      
-╦  ┌─┐┬ ┬┌─┐┬─┐ 
-║  │ ││││├┤ ├┬┘ 
-╩═╝└─┘└┴┘└─┘┴└─ 
-        """)
-
-    @staticmethod
     def move_personality(list_a, list_b, list_index):
         """Moves list_a[list_index] to list_b
 
@@ -413,64 +418,80 @@ class HigherLowerGame:
             random_index = randint(0, len(self.data[self.UNUSED_PERSONALITIES]) - 1)
             self.move_personality(self.data[self.UNUSED_PERSONALITIES], self.data[self.PERSONALITY_B], random_index)
 
+    def show_gameboard(self):
+        name_a = self.data[self.PERSONALITY_A][0]['name']
+        description_a = self.data[self.PERSONALITY_A][0]['description']
+        location_a = self.data[self.PERSONALITY_A][0]['country']
+        # followers_a = self.data[self.PERSONALITY_A][0]['follower_count']
+
+        name_b = self.data[self.PERSONALITY_B][0]['name']
+        description_b = self.data[self.PERSONALITY_B][0]['description']
+        location_b = self.data[self.PERSONALITY_B][0]['country']
+        # followers_b = self.data[self.PERSONALITY_B][0]['follower_count']
+
+        print(f"(A) {name_a} ({description_a} from {location_a})")
+        print("└─────╢vs╟─────┐")
+        print(f"(B) {name_b} ({description_b} from {location_b})")
+
+    def get_user_guess(self):
+        self.data[self.USER_GUESS] = input(self.PROMPT_WHICH_IS_HIGHER).lower()
+
+    def check_for_winner(self):
+        self.data[self.IS_WINNER] = False
+        if self.data[self.USER_GUESS] == "a":
+            if self.data[self.PERSONALITY_A][0]['follower_count'] > self.data[self.PERSONALITY_B][0]['follower_count']:
+                self.data[self.IS_WINNER] = True
+            else:
+                self.data[self.IS_WINNER] = False
+        else:
+            if self.data[self.PERSONALITY_B][0]['follower_count'] > self.data[self.PERSONALITY_A][0]['follower_count']:
+                self.data[self.IS_WINNER] = True
+            else:
+                self.data[self.IS_WINNER] = False
+
+    def show_game_end(self):
+        name_a = self.data[self.PERSONALITY_A][0]['name']
+        name_b = self.data[self.PERSONALITY_B][0]['name']
+        followers_a = self.data[self.PERSONALITY_A][0]['follower_count']
+        followers_b = self.data[self.PERSONALITY_B][0]['follower_count']
+        print("Wrong answer!")
+        print(f"{name_a} had {followers_a}M followers and {name_b} had {followers_b}M followers!")
+        print(f"Your score was: {self.data[self.SCORE]}")
+
+    def show_game_win(self):
+        name_a = self.data[self.PERSONALITY_A][0]['name']
+        name_b = self.data[self.PERSONALITY_B][0]['name']
+        followers_a = self.data[self.PERSONALITY_A][0]['follower_count']
+        followers_b = self.data[self.PERSONALITY_B][0]['follower_count']
+        print("Correct!")
+        print(f"{name_a} had {followers_a}M followers and {name_b} had {followers_b}M followers!")
+        self.data[self.SCORE] += 1
+        print(f"Your score is now: {self.data[self.SCORE]}")
+        self.pick_random_personality()
+
 
 def main():
     hilo = HigherLowerGame()
-    hilo.show_logo()
-    # Present choice to user for mode or to quit the program
+    print(hilo.LOGO)
     while True:
-        menu_command = int(input("[1] Play\n[0] Quit\n: "))
-        if menu_command == 1:
+        menu_command = int(input(MENU))
+        if menu_command == PLAY_GAME:
             hilo.new_game()
             hilo.pick_random_personality()
             while True:
-                name_a = hilo.data[hilo.PERSONALITY_A][0]['name']
-                description_a = hilo.data[hilo.PERSONALITY_A][0]['description']
-                location_a = hilo.data[hilo.PERSONALITY_A][0]['country']
-                followers_a = hilo.data[hilo.PERSONALITY_A][0]['follower_count']
-
-                name_b = hilo.data[hilo.PERSONALITY_B][0]['name']
-                description_b = hilo.data[hilo.PERSONALITY_B][0]['description']
-                location_b = hilo.data[hilo.PERSONALITY_B][0]['country']
-                followers_b = hilo.data[hilo.PERSONALITY_B][0]['follower_count']
-
-                print(f"(A) {name_a} ({description_a} from {location_a})")
-                print("└─────╢vs╟─────┐")
-                print(f"(B) {name_b} ({description_b} from {location_b})")
-
-                user_guess = input("Which of these two personalities have more followers? (A or B)\n: ").lower()
-
-                is_winner = False
-                if user_guess == "a":
-                    if followers_a > followers_b:
-                        is_winner = True
-                    else:
-                        is_winner = False
-                else:
-                    if followers_b > followers_a:
-                        is_winner = True
-                    else:
-                        is_winner = False
-
-                if not is_winner:
-                    print("Wrong answer!")
-                    print(f"{name_a} had {followers_a}M followers and {name_b} had {followers_b}M followers!")
-                    print(f"Your score was: {hilo.data[hilo.SCORE]}")
+                hilo.show_gameboard()
+                hilo.get_user_guess()
+                hilo.check_for_winner()
+                if not hilo.data[hilo.IS_WINNER]:
+                    hilo.show_game_end()
                     break
                 else:
-                    print("Correct!")
-                    print(f"{name_a} had {followers_a}M followers and {name_b} had {followers_b}M followers!")
-                    hilo.data[hilo.SCORE] += 1
-                    print(f"Your score is now: {hilo.data[hilo.SCORE]}")
-                    hilo.pick_random_personality()
-
-                input("Press enter to continue...")
-        elif menu_command == 0:
-            # Exit main()
+                    hilo.show_game_win()
+                input(PRESS_ENTER)
+        elif menu_command == QUIT_GAME:
             return
         else:
-            # Invalid user input
-            print("Please choose a menu option to continue.")
+            print(INVALID_INPUT)
 
 
 if __name__ == "__main__":
