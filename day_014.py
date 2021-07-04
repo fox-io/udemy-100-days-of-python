@@ -359,7 +359,20 @@ class HigherLowerGame:
     current_score = 0
 
     def __init__(self):
-        """Does nothing"""
+        """
+        -----
+        Day 14 Project: Higher or Lower
+        -----
+        Using a list of personalities and their follower counts,
+        Offer two random entries and ask user to choose the one
+        that has more followers. If they get it right, then use
+        the second person as the first person and compare to a
+        new random person. If they get it wrong, then game over.
+        Present a count of how many they got right and ask if
+        they would like to play again.
+
+        (c)2021 John Mann <gitlab.fox-io@foxdata.io>
+        """
         pass
 
     @staticmethod
