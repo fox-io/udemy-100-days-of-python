@@ -75,26 +75,109 @@ resources = {
     "coffee": 100,
 }
 
+profits = 0.0
+
+
+def show_coffee_menu():
+    menu_item = input("What would you like? (espresso/latte/cappuccino): ")
+    if menu_item == "off" or menu_item == "report" or COFFEE_MENU[menu_item]:
+        return menu_item
+    else:
+        return False
+
+
+def power_off():
+    print("Powering down...")
+
+
+def generate_report():
+    print(f"""
+    Water: {resources["water"]}
+    Milk: {resources["milk"]}
+    Coffee: {resources["coffee"]}
+    Profits: {profits}
+    """)
+
+
+def make_coffee(menu_item):
+    resources["water"] = resources["water"] - COFFEE_MENU[menu_item]["ingredients"]["water"]
+    if not menu_item == "espresso":
+        resources["milk"] = resources["milk"] - COFFEE_MENU[menu_item]["ingredients"]["milk"]
+    resources["coffee"] = resources["coffee"] - COFFEE_MENU[menu_item]["ingredients"]["coffee"]
+    print(f"Here is your {menu_item}.")
+
+
+def has_resources(menu_item):
+    can_make = True
+    milk_needed = 0
+    water_needed = COFFEE_MENU[menu_item]["ingredients"]["water"]
+    if not menu_item == "espresso":
+        milk_needed = COFFEE_MENU[menu_item]["ingredients"]["milk"]
+    coffee_needed = COFFEE_MENU[menu_item]["ingredients"]["coffee"]
+
+    if resources["water"] < water_needed:
+        can_make = False
+    if resources["milk"] < milk_needed:
+        can_make = False
+    if resources["coffee"] < coffee_needed:
+        can_make = False
+
+    if can_make:
+        return menu_item
+    else:
+        print(f"There is not enough resources to make {menu_item}")
+        return can_make
+
+
+def accept_money(menu_item):
+    global profits
+    inserted_money = 0
+    print(f"The price is ${COFFEE_MENU[menu_item]['cost']}")
+    num_quarters = int(input("How many quarters to insert? "))
+    num_dimes = int(input("How many dimes to insert? "))
+    num_nickels = int(input("How many nickels to insert? "))
+    num_pennies = int(input("How many pennies to insert? "))
+    inserted_money = inserted_money + (num_quarters * 0.25)
+    inserted_money = inserted_money + (num_dimes * 0.10)
+    inserted_money = inserted_money + (num_nickels * 0.05)
+    inserted_money = inserted_money + (num_pennies * 0.01)
+    item_price = COFFEE_MENU[menu_item]["cost"]
+    if item_price > inserted_money:
+        print("You did not insert enough money. You will be refunded.")
+        return False
+    elif item_price < inserted_money:
+        profits = profits + COFFEE_MENU[menu_item]["cost"]
+        print(f"Dispensing ${inserted_money - item_price:.2f} in change.")
+        return True
+    else:
+        profits = profits + COFFEE_MENU[menu_item]["cost"]
+        print("Exact change accepted.")
+        return True
+
 
 def main():
-    pass
-    root_loop:
-    show_coffee_menu()
-    get_user_menu_input()
-        if "off": turn_coffee_machine_off()
-        if "report": generate_report()
-        if make_coffee:
-            has_enough_resources()
-            if not: error_not_enough_resources()
+    while True:
+        while True:
+            menu_item = show_coffee_menu()
+            if not menu_item:
+                print("Invalid option. Try again.")
+            elif menu_item == "off":
+                power_off()
+                return
+            elif menu_item == "report":
+                generate_report()
             else:
-                until enough_money():
-                    insert_money()
-                        insert quarters() insert dimes() insert nickels() insert pennies()
-                move_money_to_profit()
-                give_change()
-                if transaction_successful and enough_resources:
-                    reduce_resources(drink_type)
-                    dispense_coffee(drink_type)
+                can_make = has_resources(menu_item)
+                if not can_make:
+                    print("Error. Not enough resources to make drink.")
+                    break
+                else:
+                    transaction_successful = accept_money(menu_item)
+                    if transaction_successful:
+                        make_coffee(menu_item)
+                    else:
+                        break
+
 
 if __name__ == "__main__":
     main()
