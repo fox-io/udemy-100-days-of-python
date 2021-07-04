@@ -141,3 +141,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Practice
 
     * Debugging
+    
+## Day 14
+
+* ### Project
+
+    * Higher or Lower game
