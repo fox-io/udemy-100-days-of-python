@@ -75,8 +75,6 @@ resources = {
     "coffee": 100,
 }
 
-profits = 0.0
-
 
 def show_coffee_menu():
     menu_item = input("What would you like? (espresso/latte/cappuccino): ")
@@ -90,12 +88,12 @@ def power_off():
     print("Powering down...")
 
 
-def generate_report():
+def generate_report(cur_profits):
     print(f"""
     Water: {resources["water"]}
     Milk: {resources["milk"]}
     Coffee: {resources["coffee"]}
-    Profits: {profits}
+    Profits: {format_currency(cur_profits)}
     """)
 
 
@@ -129,33 +127,39 @@ def has_resources(menu_item):
         return can_make
 
 
+def format_currency(money):
+    money = str(money)
+    cents = money[-2:]
+    dollars = money[0:-2]
+    return f"${dollars}.{cents}"
+
+
 def accept_money(menu_item):
-    global profits
     inserted_money = 0
-    print(f"The price is ${COFFEE_MENU[menu_item]['cost']}")
+    # Convert the float to int to avoid float precision error
+    item_price = int(COFFEE_MENU[menu_item]['cost'] * 100)
+    print(f"The price is {format_currency(item_price)}")
     num_quarters = int(input("How many quarters to insert? "))
     num_dimes = int(input("How many dimes to insert? "))
     num_nickels = int(input("How many nickels to insert? "))
     num_pennies = int(input("How many pennies to insert? "))
-    inserted_money = inserted_money + (num_quarters * 0.25)
-    inserted_money = inserted_money + (num_dimes * 0.10)
-    inserted_money = inserted_money + (num_nickels * 0.05)
-    inserted_money = inserted_money + (num_pennies * 0.01)
-    item_price = COFFEE_MENU[menu_item]["cost"]
+    inserted_money = inserted_money + (num_quarters * 25)
+    inserted_money = inserted_money + (num_dimes * 10)
+    inserted_money = inserted_money + (num_nickels * 5)
+    inserted_money = inserted_money + num_pennies
     if item_price > inserted_money:
         print("You did not insert enough money. You will be refunded.")
         return False
     elif item_price < inserted_money:
-        profits = profits + COFFEE_MENU[menu_item]["cost"]
-        print(f"Dispensing ${inserted_money - item_price:.2f} in change.")
-        return True
+        print(f"Dispensing {format_currency(inserted_money - item_price)} in change.")
+        return item_price
     else:
-        profits = profits + COFFEE_MENU[menu_item]["cost"]
         print("Exact change accepted.")
-        return True
+        return item_price
 
 
 def main():
+    profits = 0
     while True:
         while True:
             menu_item = show_coffee_menu()
@@ -165,15 +169,15 @@ def main():
                 power_off()
                 return
             elif menu_item == "report":
-                generate_report()
+                generate_report(profits)
             else:
                 can_make = has_resources(menu_item)
                 if not can_make:
                     print("Error. Not enough resources to make drink.")
                     break
                 else:
-                    transaction_successful = accept_money(menu_item)
-                    if transaction_successful:
+                    profits = accept_money(menu_item)
+                    if profits > 0:
                         make_coffee(menu_item)
                     else:
                         break
