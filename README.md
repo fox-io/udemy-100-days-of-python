@@ -147,3 +147,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Higher or Lower game
+    
+## Day 15
+
+* ### Project
+
+    * Coin-Op Coffee Machine
