@@ -220,7 +220,10 @@ def accept_money(menu_item):
 
 def main():
     profits = 0
+
+    # Outer loop so we can break from the inner loop and return to main menu.
     while True:
+        # Inner loop
         while True:
             menu_item = show_coffee_menu()
             if menu_item == "off":
