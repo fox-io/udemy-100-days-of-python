@@ -121,6 +121,9 @@ def generate_report(cur_profits):
 def make_coffee(menu_item):
     """Removes required ingredients from resources and dispenses the drink.
 
+    Removes water and coffee resources. If we are not making an espresso, we also remove milk. A message is displayed
+    to provide the drink to the user.
+
     Parameters
     __________
     menu_item : string
@@ -133,6 +136,21 @@ def make_coffee(menu_item):
 
 
 def has_resources(menu_item):
+    """Checks to make sure the machine has enough resources to make the drink requested.
+
+    Starting with a True state, we check each ingredient against our machine's resources. If we do not have enough of
+    any of the ingredients, we inform the user and return False. Otherwise, return True.
+
+    Parameters
+    __________
+    menu_item : string
+        The name of the drink the user wants to make.
+
+    Returns
+    _______
+    can_make : bool
+        Flag indicating if the drink can be made with the current resources or not.
+    """
     can_make = True
     milk_needed = 0
     water_needed = COFFEE_MENU[menu_item]["ingredients"]["water"]
@@ -147,11 +165,10 @@ def has_resources(menu_item):
     if resources["coffee"] < coffee_needed:
         can_make = False
 
-    if can_make:
-        return menu_item
-    else:
+    if not can_make:
         print(f"There is not enough resources to make {menu_item}")
-        return can_make
+
+    return can_make
 
 
 def format_currency(money):
