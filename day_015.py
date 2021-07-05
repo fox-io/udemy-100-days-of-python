@@ -43,6 +43,8 @@ Coffee Machine Program Requirements
 
 (c)2021 John Mann <gitlab.fox-io@foxdata.io>
 """
+
+# Coffee menu const dict provided by course
 COFFEE_MENU = {
     "espresso": {
         "ingredients": {
@@ -69,6 +71,7 @@ COFFEE_MENU = {
     }
 }
 
+# Resources dict provided by course
 resources = {
     "water": 300,
     "milk": 200,
@@ -77,11 +80,22 @@ resources = {
 
 
 def show_coffee_menu():
-    menu_item = input("What would you like? (espresso/latte/cappuccino): ")
-    if menu_item == "off" or menu_item == "report" or COFFEE_MENU[menu_item]:
-        return menu_item
-    else:
-        return False
+    """Ask user for the menu_item they would like to order.
+
+    There are two 'secret' functions allowed: 'off' and 'report'.  We only return a value if the user enters a valid
+    menu item or function. If user does not enter valid input, give a warning and ask for input again.
+
+    Returns
+    -------
+    menu_item : string
+        Contains the menu item to make or the special function requested.
+    """
+    while True:
+        menu_item = input("What would you like? (espresso/latte/cappuccino): ")
+        if menu_item == "off" or menu_item == "report" or menu_item in COFFEE_MENU:
+            return menu_item
+        else:
+            print("Invalid option. Try again.")
 
 
 def power_off():
@@ -163,9 +177,7 @@ def main():
     while True:
         while True:
             menu_item = show_coffee_menu()
-            if not menu_item:
-                print("Invalid option. Try again.")
-            elif menu_item == "off":
+            if menu_item == "off":
                 power_off()
                 return
             elif menu_item == "report":
