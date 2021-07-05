@@ -119,6 +119,12 @@ def generate_report(cur_profits):
 
 
 def make_coffee(menu_item):
+    """Removes required ingredients from resources and dispenses the drink.
+
+    Parameters
+    __________
+    menu_item : string
+        The name of the drink the user wants to make."""
     resources["water"] = resources["water"] - COFFEE_MENU[menu_item]["ingredients"]["water"]
     if not menu_item == "espresso":
         resources["milk"] = resources["milk"] - COFFEE_MENU[menu_item]["ingredients"]["milk"]
