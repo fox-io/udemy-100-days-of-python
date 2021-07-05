@@ -172,6 +172,11 @@ def has_resources(menu_item):
 
 
 def format_currency(money):
+    """Converts an integer representing cents to a formatted string representing dollars.
+
+    Returns
+    _______
+    string : Formatted currency string ie: $1.00"""
     money = str(money)
     cents = money[-2:]
     dollars = money[0:-2]
