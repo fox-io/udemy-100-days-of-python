@@ -99,6 +99,7 @@ def show_coffee_menu():
 
 
 def power_off():
+    """Prints a message to inform user that machine is powering down."""
     print("Powering down...")
 
 
