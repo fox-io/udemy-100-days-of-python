@@ -184,6 +184,17 @@ def format_currency(money):
 
 
 def accept_money(menu_item):
+    """Requests item cost from user, provides change if needed, and handles insufficient funds.
+
+    Firstly, we convert the cost of the drink requested from a float to an int. This was necessary due to a precision
+    error that floats have (after doing math, it created 1.49899999999 type results). The source course asks us to
+    display the price, then ask for each coin type to be inserted. Once the user is done inserting coins, we total them
+    up and see if they can afford the drink.  If not, we return False.  If they can, we give back any change required,
+    then return the amount collected for use in logging profits.
+
+    Returns
+    _______
+    integer : The amount of money collected, or 0 if insufficient funds."""
     inserted_money = 0
     # Convert the float to int to avoid float precision error
     item_price = int(COFFEE_MENU[menu_item]['cost'] * 100)
@@ -198,7 +209,7 @@ def accept_money(menu_item):
     inserted_money = inserted_money + num_pennies
     if item_price > inserted_money:
         print("You did not insert enough money. You will be refunded.")
-        return False
+        return 0
     elif item_price < inserted_money:
         print(f"Dispensing {format_currency(inserted_money - item_price)} in change.")
         return item_price
