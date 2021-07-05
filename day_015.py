@@ -86,7 +86,7 @@ def show_coffee_menu():
     menu item or function. If user does not enter valid input, give a warning and ask for input again.
 
     Returns
-    -------
+    _______
     menu_item : string
         Contains the menu item to make or the special function requested.
     """
@@ -104,6 +104,12 @@ def power_off():
 
 
 def generate_report(cur_profits):
+    """Formats and displays a report of resources and profits.
+
+    Parameters
+    __________
+    cur_profits : int
+        The current amount of profits in the machine."""
     print(f"""
     Water: {resources["water"]}
     Milk: {resources["milk"]}
