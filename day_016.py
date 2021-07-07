@@ -1,6 +1,6 @@
 """
 -----
-Day 15 Project: Coffee Machine
+Day 16 Project: Coffee Machine
 -----
 Coffee Machine Program Requirements
 
