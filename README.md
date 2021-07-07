@@ -153,3 +153,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Coin-Op Coffee Machine
+    
+## Day 16
+
+* ### Project
+
+    * Making the Coffee Machine OOP
