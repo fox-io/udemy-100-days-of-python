@@ -54,17 +54,17 @@ class Dispenser:
         self.resources["coffee"] = coffee
 
     def make_coffee(self, menu, menu_item):
-        self.resources["water"] = self.resources["water"] - menu.get_menu_item(menu_item).ingredients["water"]
+        self.resources["water"] = self.resources["water"] - menu.menu[menu_item].ingredients["water"]
         if not menu_item == "espresso":
-            self.resources["milk"] = self.resources["milk"] - menu.get_menu_item(menu_item).ingredients["milk"]
-        self.resources["coffee"] = self.resources["coffee"] - menu.get_menu_item(menu_item).ingredients["coffee"]
+            self.resources["milk"] = self.resources["milk"] - menu.menu[menu_item].ingredients["milk"]
+        self.resources["coffee"] = self.resources["coffee"] - menu.menu[menu_item].ingredients["coffee"]
         print(f"Here is your {menu_item}.")
 
     def has_resources(self, menu, menu_item):
         can_make = True
-        water_needed = menu.get_menu_item(menu_item).ingredients["water"] or 0
-        milk_needed = menu.get_menu_item(menu_item).ingredients["milk"] or 0
-        coffee_needed = menu.get_menu_item(menu_item).ingredients["coffee"] or 0
+        water_needed = menu.menu[menu_item].ingredients["water"] or 0
+        milk_needed = menu.menu[menu_item].ingredients["milk"] or 0
+        coffee_needed = menu.menu[menu_item].ingredients["coffee"] or 0
 
         if self.resources["water"] < water_needed:
             can_make = False
@@ -85,7 +85,7 @@ class CoinOperation:
 
     def accept_money(self, menu, menu_item):
         inserted_money = 0
-        item_price = menu.get_menu_item(menu_item).cost
+        item_price = menu.menu[menu_item].cost
         print(f"The price is {self.format_currency(item_price)}")
         num_quarters = int(input("How many quarters to insert? "))
         num_dimes = int(input("How many dimes to insert? "))
@@ -130,26 +130,14 @@ class MenuItem:
         }
         self.cost = cost
 
-    def __str__(self):
-        return str(self.__class__) + ": " + str(self.__dict__)
-
 
 class Menu:
     def __init__(self):
         self.menu = {
-            MenuItem("latte", 200, 150, 24, 250),
-            MenuItem("cappuccino", 250, 100, 24, 300),
-            MenuItem("espresso", 50, 0, 18, 150),
+            "latte": MenuItem("latte", 200, 150, 24, 250),
+            "cappuccino": MenuItem("cappuccino", 250, 100, 24, 300),
+            "espresso": MenuItem("espresso", 50, 0, 18, 150),
         }
-
-    def __str__(self):
-        return str(self.__class__) + ": " + str(self.__dict__)
-
-    def get_menu_item(self, query):
-        for item in self.menu:
-            if item.name == query:
-                return item
-        return None
 
     def show(self):
         """Ask user for the menu_item they would like to order.
@@ -165,13 +153,13 @@ class Menu:
         menu_list = ""
         for item in self.menu:
             if menu_list == "":
-                menu_list = item.name
+                menu_list = item
             else:
-                menu_list += f"|{item.name}"
+                menu_list += f"|{item}"
         while True:
             menu_item = input(f"What would you like? ({menu_list}): ")
             for item in self.menu:
-                if menu_item == item.name:
+                if menu_item == item:
                     return menu_item
 
             if menu_item == "off" or menu_item == "report":
