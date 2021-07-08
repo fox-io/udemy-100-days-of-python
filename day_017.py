@@ -26,24 +26,28 @@ class QuestionList:
                 data = json.load(f)
                 index = 0
                 for entry in data["results"]:
-                    self.list[index] = {
-                            "question": entry["question"],
-                            "answer": entry["correct_answer"],
-                    }
+                    self.list[index] = Question(entry["question"], entry["correct_answer"])
                     index += 1
         except error.URLError as e:
             print(e.reason)
 
+    def ask(self, num):
+        print(f"[Q {num + 1}/4] {self.list[num].question}")
+        guess = input("true or false? ").lower()
+        if guess == self.list[num].answer.lower():
+            print("That's correct!")
+            return 1
+        else:
+            print("Wrong answer!")
+            return 0
+
 
 def main():
+    score = 0
     questions = QuestionList()
-    print(questions.list[0]["question"])
-    guess = input("true or false? ")
-    if guess == questions.list[0]["answer"]:
-        print("Correct!")
-    else:
-        print("Wrong!")
-    pass
+    for question_round in range(0, 4):
+        score += questions.ask(question_round)
+    print(f"Final score: {score}/4")
 
 
 if __name__ == "__main__":
