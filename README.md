@@ -165,3 +165,14 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Trivia
+    
+## Day 18
+
+* ### Practice
+
+    * Drawing shapes    
+    * Spirograph
+    
+* ### Project
+
+    * Hirst Spot Painting
