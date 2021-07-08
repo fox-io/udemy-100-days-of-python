@@ -159,3 +159,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Making the Coffee Machine OOP
+    
+## Day 17
+
+* ### Project
+
+    * Trivia
