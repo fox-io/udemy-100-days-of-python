@@ -176,3 +176,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Hirst Spot Painting
+    
+## Day 19
+
+* ### Practice
+
+    * Etch-A-Sketch
