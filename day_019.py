@@ -1,4 +1,49 @@
+"""
+-----
+Day 19 Project: Turtle Race
+-----
 
+(c)2021 John Mann <gitlab.fox-io@foxdata.io>
+"""
+from turtle import Turtle, Screen
+import random
+
+racing_turtles = {}
+
+turtle_colors = ["red", "yellow", "green", "blue", "purple"]
+
+for num in range(5):
+    racing_turtles[num] = Turtle()
+    t = racing_turtles[num]
+    t.shape("turtle")
+    t.color(turtle_colors[num])
+    t.is_color = turtle_colors[num]
+    t.penup()
+    t.goto(-200.0, -50.0 + (num * 20))
+    t.pendown()
+
+s = Screen()
+s.setup(width=500, height=400)
+
+bet = s.textinput(title="Bet", prompt="Enter a turtle color: ")
+
+
+def on_timer():
+    random_turtle = random.randint(0, 4)
+    racing_turtles[random_turtle].forward(10)
+    if not racing_turtles[random_turtle].xcor() >= 200:
+        s.ontimer(fun=on_timer, t=100)
+    else:
+        print(f"{racing_turtles[random_turtle].is_color} wins!")
+        if bet == racing_turtles[random_turtle].is_color:
+            print("You chose the winning turtle!")
+        else:
+            print("Your turtle didn't win this time.")
+
+
+s.ontimer(fun=on_timer, t=100)
+
+s.exitonclick()
 
 # Practice Day 19: Etch-A-Sketch
 # from turtle import Turtle, Screen

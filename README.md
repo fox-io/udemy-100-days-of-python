@@ -182,3 +182,7 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Practice
 
     * Etch-A-Sketch
+    
+* ### Project
+
+    * Turtle Race
