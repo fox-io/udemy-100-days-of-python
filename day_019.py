@@ -17,7 +17,6 @@ for num in range(5):
     t = racing_turtles[num]
     t.shape("turtle")
     t.color(turtle_colors[num])
-    t.is_color = turtle_colors[num]
     t.penup()
     t.goto(-200.0, -50.0 + (num * 20))
     t.pendown()
@@ -30,12 +29,13 @@ bet = s.textinput(title="Bet", prompt="Enter a turtle color: ")
 
 def on_timer():
     random_turtle = random.randint(0, 4)
-    racing_turtles[random_turtle].forward(10)
-    if not racing_turtles[random_turtle].xcor() >= 200:
+    rt = racing_turtles[random_turtle]
+    rt.forward(10)
+    if not rt.xcor() >= 200:
         s.ontimer(fun=on_timer, t=100)
     else:
-        print(f"{racing_turtles[random_turtle].is_color} wins!")
-        if bet == racing_turtles[random_turtle].is_color:
+        print(f"{rt.pencolor()} wins!")
+        if bet == rt.pencolor():
             print("You chose the winning turtle!")
         else:
             print("Your turtle didn't win this time.")
