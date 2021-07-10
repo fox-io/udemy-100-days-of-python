@@ -186,3 +186,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Turtle Race
+    
+## Day 20
+
+* ### Project
+
+    * Snake Game, pt. 1
