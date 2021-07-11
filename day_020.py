@@ -19,13 +19,12 @@ Classes: Snake, Food, Score
 (c)2021 John Mann <gitlab.fox-io@foxdata.io>
 """
 from turtle import Turtle, Screen
-from random import randint
 import time
 
 
 class Snake:
     body = []
-    speed = 0.2
+    speed = 0.1
 
     def __init__(self):
         for starting_position in range(0, 3):
@@ -59,6 +58,16 @@ class Snake:
     def head_east(self):
         if self.body[0].heading() == 270.0 or self.body[0].heading() == 90.0:
             self.body[0].setheading(0.0)
+
+
+class Food:
+    def __init__(self):
+        pass
+
+
+class Score:
+    def __init__(self):
+        pass
 
 
 def ontimer():
