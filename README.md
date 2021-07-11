@@ -192,3 +192,9 @@ https://www.udemy.com/course/100-days-of-code/learn/lecture/17841394#content
 * ### Project
 
     * Snake Game, pt. 1
+    
+## Day 21
+
+* ### Project
+
+    * Snake Game, pt. 2
