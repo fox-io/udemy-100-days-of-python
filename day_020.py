@@ -44,6 +44,22 @@ class Snake:
     def move(self):
         self.body[0].forward(20)
 
+    def head_north(self):
+        if self.body[0].heading() == 0.0 or self.body[0].heading() == 180.0:
+            self.body[0].setheading(90.0)
+
+    def head_west(self):
+        if self.body[0].heading() == 90.0 or self.body[0].heading() == 270.0:
+            self.body[0].setheading(180.0)
+
+    def head_south(self):
+        if self.body[0].heading() == 180.0 or self.body[0].heading() == 0.0:
+            self.body[0].setheading(270.0)
+
+    def head_east(self):
+        if self.body[0].heading() == 270.0 or self.body[0].heading() == 90.0:
+            self.body[0].setheading(0.0)
+
 
 def ontimer():
     pass
@@ -56,6 +72,12 @@ def main():
     screen.title("Snake")
     screen.tracer(0)
     snake = Snake()
+
+    screen.onkeypress(snake.head_north, "w")
+    screen.onkeypress(snake.head_west, "a")
+    screen.onkeypress(snake.head_south, "s")
+    screen.onkeypress(snake.head_east, "d")
+    screen.listen()
 
     power = True
     while power:
