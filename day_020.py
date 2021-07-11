@@ -41,8 +41,20 @@ class Snake:
             new_y = self.body[segment - 1].ycor()
             self.body[segment].goto(new_x, new_y)
 
-    def move(self):
+    def move(self, f):
         self.body[0].forward(20)
+        # Detect collision
+        min_x = self.body[0].xcor() - 10
+        max_x = self.body[0].xcor() + 10
+        min_y = self.body[0].ycor() - 10
+        max_y = self.body[0].ycor() + 10
+
+        food_x = f.turtle.xcor()
+        food_y = f.turtle.ycor()
+
+        if min_x <= food_x <= max_x and min_y <= food_y <= max_y:
+            return True
+        return False
 
     def head_north(self):
         if self.body[0].heading() == 0.0 or self.body[0].heading() == 180.0:
@@ -73,18 +85,17 @@ class Food:
 
         * 280 is the min/max playing area in which the turtle will be fully visible.
         """
-        pos_x = uniform(-280, 280)
-        pos_y = uniform(-280, 280)
+        pos_x = int(uniform(-280, 280))
+        pos_y = int(uniform(-280, 280))
         self.turtle.goto(pos_x, pos_y)
 
 
 class Score:
     def __init__(self):
-        pass
+        self.score = 0
 
-
-def ontimer():
-    pass
+    def add_point(self):
+        self.score += 1
 
 
 def main():
@@ -94,7 +105,7 @@ def main():
     screen.title("Snake")
     screen.tracer(0)
     snake = Snake()
-
+    score = Score()
     food = Food()
 
     screen.onkeypress(snake.head_north, "w")
@@ -108,7 +119,10 @@ def main():
         screen.update()
         time.sleep(snake.speed)
         snake.update()
-        snake.move()
+        nom_nom = snake.move(food)
+        if nom_nom:
+            score.add_point()
+            food.respawn()
 
     screen.exitonclick()
 
