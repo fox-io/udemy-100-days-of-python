@@ -19,6 +19,7 @@ Classes: Snake, Food, Score
 (c)2021 John Mann <gitlab.fox-io@foxdata.io>
 """
 from turtle import Turtle, Screen
+from random import uniform
 import time
 
 
@@ -62,7 +63,19 @@ class Snake:
 
 class Food:
     def __init__(self):
-        pass
+        self.turtle = Turtle("turtle")
+        self.turtle.penup()
+        self.turtle.color("green")
+        self.respawn()
+
+    def respawn(self):
+        """Generating random coordinates for the food location.
+
+        * 280 is the min/max playing area in which the turtle will be fully visible.
+        """
+        pos_x = uniform(-280, 280)
+        pos_y = uniform(-280, 280)
+        self.turtle.goto(pos_x, pos_y)
 
 
 class Score:
@@ -81,6 +94,8 @@ def main():
     screen.title("Snake")
     screen.tracer(0)
     snake = Snake()
+
+    food = Food()
 
     screen.onkeypress(snake.head_north, "w")
     screen.onkeypress(snake.head_west, "a")
