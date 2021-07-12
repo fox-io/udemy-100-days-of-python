@@ -16,25 +16,53 @@ Need a final score situation to get winner
 from turtle import Turtle, Screen
 
 
-class Paddle:
+class Paddle(Turtle):
+    def __init__(self, player_num):
+        super().__init__("square")
+        self.setup(player_num)
+
+    def setup(self, player_num):
+        # No drawing
+        self.penup()
+
+        # White paddle
+        self.color("white")
+
+        # Make shape as rectangle
+        self.shapesize(3, 1)
+
+        # Send player 1 left and 2 right
+        self.goto(player_num == 1 and -380 or 380, 0)
+
+
+class Ball(Turtle):
     def __init__(self):
-        pass
+        super().__init__("circle")
+        self.setup()
+
+    def setup(self):
+        self.penup()
+        self.shapesize(0.75, 0.75)
+        self.color("white")
 
 
-class Ball:
-    def __init__(self):
-        pass
+class Score(Turtle):
+    def __init__(self, player_num, screen_height):
+        super().__init__()
+        self.score = 0
+        self.setup(player_num, screen_height)
 
-
-class Score:
-    def __init__(self):
-        pass
+    def setup(self, player_num, screen_height):
+        self.hideturtle()
+        self.penup()
+        self.color("white")
+        self.goto(player_num == 1 and -50 or 50, screen_height/2 - 50)
+        self.write(f"{self.score}", False, align="center", font=("Consolas", 32, "normal"))
 
 
 class DMZ(Turtle):
     def __init__(self, screen_height):
         super().__init__("square")
-
         self.setup()
         self.draw(screen_height)
 
@@ -75,10 +103,23 @@ def main():
 
     # Create play area
     s = Screen()
+    s.title("Pong")
     s.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
     s.bgcolor("black")
 
+    # Make scores
+    player_1_score = Score(1, SCREEN_HEIGHT)
+    player_2_score = Score(2, SCREEN_HEIGHT)
+
+    # Make DMZ line
     dmz = DMZ(SCREEN_HEIGHT)
+
+    # Create paddles
+    player_1 = Paddle(1)
+    player_2 = Paddle(2)
+
+    # Create ball
+    ball = Ball()
 
     s.exitonclick()
 
