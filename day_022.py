@@ -8,7 +8,7 @@ from time import sleep
 
 
 class Paddle(Turtle):
-    def __init__(self, player_num, screen, x_loc, y_loc, key_up, key_down):
+    def __init__(self, screen, x_loc, y_loc, key_up, key_down):
         super().__init__("square")
 
         # No drawing
@@ -82,6 +82,17 @@ class Score(Turtle):
         self.update_score()
 
 
+class GameOver(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.hideturtle()
+        self.penup()
+        self.color("white")
+        self.goto(0, 0)
+        self.clear()
+        self.write("Game Over", False, align="center", font=("Monospace", 32, "normal"))
+
+
 class DMZ(Turtle):
     def __init__(self, screen_height):
         super().__init__("square")
@@ -93,9 +104,6 @@ class DMZ(Turtle):
         self.color("white")
         self.shapesize(0.25, 0.25, 0)
         self.pensize(5)
-
-        # We don't need visible animation. Make it fastest.
-        self.speed("fastest")
 
     def draw(self, screen_height):
         # Go to top of screen, center
@@ -112,68 +120,77 @@ class DMZ(Turtle):
             self.goto(0, self.ycor() - 10)
 
 
-def main():
-    # Play area will be 800x600
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
+class Pong:
+    def __init__(self, width, height):
+        # Save these values so we can use them later
+        self.screen_width = width
+        self.screen_height = height
 
-    # Readable headings
-    # NORTH = 90.0
-    # EAST = 0.0
-    # SOUTH = 270.0
-    # WEST = 180.0
+        # Create play area with proper dimensions, background color and window title.
+        self.screen = Screen()
+        self.screen.setup(self.screen_width, self.screen_height)
+        self.screen.bgcolor("black")
+        self.screen.title("Pong")
 
-    # Create play area
-    s = Screen()
-    s.title("Pong")
-    s.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
-    s.bgcolor("black")
-    # Turn off animation
-    s.tracer(0)
-    s.listen()
+        # Disable animation updates so we can hide some movements from the player.
+        self.screen.tracer(0)
 
-    # Make scores
-    player_1_score = Score(1, SCREEN_HEIGHT)
-    player_2_score = Score(2, SCREEN_HEIGHT)
+        # Listen for events
+        self.screen.listen()
 
-    # Make DMZ line
-    dmz = DMZ(SCREEN_HEIGHT)
+        # Add score objects
+        self.score_p1 = Score(1, self.screen_height)
+        self.score_p2 = Score(2, self.screen_height)
 
-    # Create paddles
-    player_1_paddle = Paddle(1, s, -350, 0, "w", "s")
-    player_2_paddle = Paddle(2, s, 350, 0, "Up", "Down")
+        # Add DMZ line
+        self.dmz = DMZ(self.screen_height)
 
-    # Create ball
-    ball = Ball()
+        # Add player paddles
+        self.paddle_p1 = Paddle(self.screen, -350, 0, "w", "s")
+        self.paddle_p2 = Paddle(self.screen, 350, 0, "Up", "Down")
 
-    # Run game updates, and then update screen
-    game = True
-    while game:
+        self.ball = Ball()
+
+    def update(self):
         # Set game speed to playable speed
         sleep(0.05)
 
         # Move the ball to its new location
-        ball.move()
+        self.ball.move()
 
         # Bounce the ball if it hits the top or bottom of screen.
         # If ball hits left or right of screen, add appropriate points.
-        if ball.ycor() > 280 or ball.ycor() < -280:
-            ball.bounce("y")
-        elif ball.xcor() >= 340 and ball.distance(player_2_paddle) < 50:
-            ball.bounce("x")
-        elif ball.xcor() >= 380:
-            player_1_score.add_point()
-            ball.respawn()
-        elif ball.xcor() <= -340 and ball.distance(player_1_paddle) < 50:
-            ball.bounce("x")
-        elif ball.xcor() < -380:
-            player_2_score.add_point()
-            ball.respawn()
+        if self.ball.ycor() > 280 or self.ball.ycor() < -280:
+            self.ball.bounce("y")
+        elif self.ball.xcor() >= 340 and self.ball.distance(self.paddle_p2) < 50:
+            self.ball.bounce("x")
+        elif self.ball.xcor() >= 380:
+            self.score_p1.add_point()
+            self.ball.respawn()
+        elif self.ball.xcor() <= -340 and self.ball.distance(self.paddle_p1) < 50:
+            self.ball.bounce("x")
+        elif self.ball.xcor() < -380:
+            self.score_p2.add_point()
+            self.ball.respawn()
+
+        if self.score_p1.score >= 3 or self.score_p2.score >= 3:
+            game_over = GameOver()
+            return False
 
         # Update animation
-        s.update()
+        self.screen.update()
 
-    s.exitonclick()
+        return True
+
+
+def main():
+    game = Pong(width=800, height=600)
+
+    running = True
+    while running:
+        running = game.update()
+
+    game.screen.exitonclick()
 
 
 if __name__ == "__main__":
