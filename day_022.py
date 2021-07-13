@@ -2,11 +2,6 @@
 -----
 Day 22 Project: Pong
 -----
-Paddle can go up and down only
-Ball that bounces back and forth (bounces from paddle and top/bottom of screen.
-    If paddle misses ball, it returns to center and point scored
-        Which direction to send it after scoring?
-Need a final score situation to get winner
 """
 from turtle import Turtle, Screen
 from time import sleep
