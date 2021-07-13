@@ -2,37 +2,41 @@
 -----
 Day 22 Project: Pong
 -----
-
-Two scores - left and right player
-Two paddles - left and right player
-    Paddle can go up and down only
-Dashed line across middle
+Paddle can go up and down only
 Ball that bounces back and forth (bounces from paddle and top/bottom of screen.
     If paddle misses ball, it returns to center and point scored
         Which direction to send it after scoring?
 Need a final score situation to get winner
-
 """
 from turtle import Turtle, Screen
 
 
 class Paddle(Turtle):
-    def __init__(self, player_num):
+    def __init__(self, player_num, screen, x_loc, y_loc, key_up, key_down):
         super().__init__("square")
-        self.setup(player_num)
 
-    def setup(self, player_num):
         # No drawing
         self.penup()
 
         # White paddle
         self.color("white")
 
-        # Make shape as rectangle
-        self.shapesize(3, 1)
+        # Make shape as rectangle and rotate it correctly
+        self.shapesize(1, 5)
+        self.setheading(90.0)
 
-        # Send player 1 left and 2 right
-        self.goto(player_num == 1 and -380 or 380, 0)
+        # Assign event handlers
+        screen.onkey(self.move_up, key_up)
+        screen.onkey(self.move_down, key_down)
+
+        # Move paddle to start location
+        self.goto(x_loc, y_loc)
+
+    def move_up(self):
+        self.forward(20)
+
+    def move_down(self):
+        self.backward(20)
 
 
 class Ball(Turtle):
@@ -41,9 +45,14 @@ class Ball(Turtle):
         self.setup()
 
     def setup(self):
+        self.speed("fastest")
         self.penup()
         self.shapesize(0.75, 0.75)
         self.color("white")
+
+    def move(self):
+        # TODO
+        pass
 
 
 class Score(Turtle):
@@ -54,10 +63,15 @@ class Score(Turtle):
 
     def setup(self, player_num, screen_height):
         self.hideturtle()
+        self.speed("fastest")
         self.penup()
         self.color("white")
         self.goto(player_num == 1 and -50 or 50, screen_height/2 - 50)
-        self.write(f"{self.score}", False, align="center", font=("Consolas", 32, "normal"))
+        self.write(f"{self.score}", False, align="center", font=("Monospace", 24, "normal"))
+
+    def add_point(self, player_num):
+        # TODO
+        pass
 
 
 class DMZ(Turtle):
@@ -106,6 +120,9 @@ def main():
     s.title("Pong")
     s.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
     s.bgcolor("black")
+    # Turn off animation
+    s.tracer(0)
+    s.listen()
 
     # Make scores
     player_1_score = Score(1, SCREEN_HEIGHT)
@@ -115,11 +132,16 @@ def main():
     dmz = DMZ(SCREEN_HEIGHT)
 
     # Create paddles
-    player_1 = Paddle(1)
-    player_2 = Paddle(2)
+    player_1_paddle = Paddle(1, s, -350, 0, "w", "s")
+    player_2_paddle = Paddle(2, s, 350, 0, "Up", "Down")
 
     # Create ball
     ball = Ball()
+
+    # Manually update animation
+    game = True
+    while game:
+        s.update()
 
     s.exitonclick()
 
