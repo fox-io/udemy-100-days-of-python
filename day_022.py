@@ -9,6 +9,7 @@ Ball that bounces back and forth (bounces from paddle and top/bottom of screen.
 Need a final score situation to get winner
 """
 from turtle import Turtle, Screen
+from time import sleep
 
 
 class Paddle(Turtle):
@@ -42,36 +43,48 @@ class Paddle(Turtle):
 class Ball(Turtle):
     def __init__(self):
         super().__init__("circle")
-        self.setup()
-
-    def setup(self):
-        self.speed("fastest")
+        self.speed("slow")
         self.penup()
-        self.shapesize(0.75, 0.75)
+        self.shapesize(1, 1)
         self.color("white")
+        self.setheading(45.0)
+        self.goto(0, 0)
+        self.x_movement = 10
+        self.y_movement = 10
 
     def move(self):
-        # TODO
-        pass
+        self.goto(self.xcor() + self.x_movement, self.ycor() + self.y_movement)
+
+    def bounce(self, axis):
+        if axis == "y":
+            self.y_movement *= -1
+        else:
+            self.x_movement *= -1
+
+    def respawn(self):
+        self.bounce("x")
+        self.goto(0, 0)
 
 
 class Score(Turtle):
     def __init__(self, player_num, screen_height):
         super().__init__()
         self.score = 0
-        self.setup(player_num, screen_height)
-
-    def setup(self, player_num, screen_height):
+        self.screen_height = screen_height
         self.hideturtle()
         self.speed("fastest")
         self.penup()
         self.color("white")
-        self.goto(player_num == 1 and -50 or 50, screen_height/2 - 50)
+        self.goto(player_num == 1 and -50 or 50, self.screen_height / 2 - 50)
+        self.update_score()
+
+    def update_score(self):
+        self.clear()
         self.write(f"{self.score}", False, align="center", font=("Monospace", 24, "normal"))
 
-    def add_point(self, player_num):
-        # TODO
-        pass
+    def add_point(self):
+        self.score += 1
+        self.update_score()
 
 
 class DMZ(Turtle):
@@ -110,10 +123,10 @@ def main():
     SCREEN_HEIGHT = 600
 
     # Readable headings
-    NORTH = 90.0
-    EAST = 0.0
-    SOUTH = 270.0
-    WEST = 180.0
+    # NORTH = 90.0
+    # EAST = 0.0
+    # SOUTH = 270.0
+    # WEST = 180.0
 
     # Create play area
     s = Screen()
@@ -138,9 +151,31 @@ def main():
     # Create ball
     ball = Ball()
 
-    # Manually update animation
+    # Run game updates, and then update screen
     game = True
     while game:
+        # Set game speed to playable speed
+        sleep(0.05)
+
+        # Move the ball to its new location
+        ball.move()
+
+        # Bounce the ball if it hits the top or bottom of screen.
+        # If ball hits left or right of screen, add appropriate points.
+        if ball.ycor() > 280 or ball.ycor() < -280:
+            ball.bounce("y")
+        elif ball.xcor() >= 340 and ball.distance(player_2_paddle) < 50:
+            ball.bounce("x")
+        elif ball.xcor() >= 380:
+            player_1_score.add_point()
+            ball.respawn()
+        elif ball.xcor() <= -340 and ball.distance(player_1_paddle) < 50:
+            ball.bounce("x")
+        elif ball.xcor() < -380:
+            player_2_score.add_point()
+            ball.respawn()
+
+        # Update animation
         s.update()
 
     s.exitonclick()
