@@ -14,24 +14,28 @@ class Car(Turtle):
         super().__init__("square")
         self.penup()
         self.speed = 0
-        self.shapesize(stretch_wid=3, stretch_len=1)
+        self.shapesize(stretch_wid=2, stretch_len=1)
         self.setheading(90)
 
         # Activate
-        self.respawn()
+        self.respawn(True)
 
     def move(self, level):
         # Move according to speed
-        self.goto(self.xcor() - (self.speed * (level/10)), self.ycor())
+        self.goto(self.xcor() - (self.speed * (1 + (level * 0.1))), self.ycor())
 
         # If we are off the screen, respawn
         if self.xcor() < -320:
-            self.respawn()
+            self.respawn(False)
 
-    def respawn(self):
+    def respawn(self, new_level):
         self.color(self.colors[randint(0, 4)])
         self.speed = randint(5, 20)
-        self.goto(320, randint(-220, 220))
+        if new_level:
+            x_spawn = randint(-320, 320)
+        else:
+            x_spawn = 320
+        self.goto(x_spawn, randint(-220, 220))
 
 
 class Player(Turtle):
@@ -75,6 +79,17 @@ class Level(Turtle):
         self.write(f"Level: {self.level}", False, align="center", font=("Monospace", 16, "normal"))
 
 
+class GameOver(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.hideturtle()
+        self.penup()
+        self.color("black")
+        self.goto(0, 0)
+        self.clear()
+        self.write("Game Over", False, align="center", font=("Monospace", 32, "normal"))
+
+
 class TurtleCrossing:
     """The main game class."""
     def __init__(self):
@@ -115,11 +130,14 @@ class TurtleCrossing:
             self.level.set(self.level.get() + 1)
             self.player.respawn()
             for car in self.cars:
-                car.respawn()
+                car.respawn(True)
 
         # Move cars
         for car in self.cars:
             car.move(self.level.get())
+            if car.distance(self.player) < 20:
+                gg = GameOver()
+                self.running = False
 
         # Update the screen
         self.screen.update()
