@@ -10,8 +10,11 @@ from time import sleep
 class TurtleCrossing:
     def __init__(self):
         self.screen = Screen()
+        self.screen.setup(600, 600)
+        self.screen.tracer(0)
 
     def update(self):
+        self.screen.update()
         return False
 
 
