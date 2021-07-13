@@ -7,21 +7,45 @@ from random import randint
 from time import sleep
 
 
+class Car(Turtle):
+    colors = ["red", "yellow", "green", "blue", "purple"]
+
+    def __init__(self):
+        super().__init__("square")
+        self.penup()
+        self.speed = 0
+        self.shapesize(stretch_wid=3, stretch_len=1)
+        self.setheading(90)
+
+        # Activate
+        self.respawn()
+
+    def move(self, level):
+        # Move according to speed
+        self.goto(self.xcor() - (self.speed * (level/10)), self.ycor())
+
+        # If we are off the screen, respawn
+        if self.xcor() < -320:
+            self.respawn()
+
+    def respawn(self):
+        self.color(self.colors[randint(0, 4)])
+        self.speed = randint(5, 20)
+        self.goto(320, randint(-220, 220))
+
+
 class Player(Turtle):
     def __init__(self):
         super().__init__("turtle")
         self.setheading(90.0)
         self.penup()
-        self.goto(0, -250)
+        self.respawn()
 
     def move_forward(self):
         self.goto(self.xcor(), self.ycor() + 20)
 
-    def move_left(self):
-        self.goto(self.xcor() - 20, self.ycor())
-
-    def move_right(self):
-        self.goto(self.xcor() + 20, self.ycor())
+    def respawn(self):
+        self.goto(0, -250)
 
 
 class Level(Turtle):
@@ -70,12 +94,36 @@ class TurtleCrossing:
         # Add keybinds
         self.screen.listen()
         self.screen.onkey(self.player.move_forward, "w")
-        self.screen.onkey(self.player.move_left, "a")
-        self.screen.onkey(self.player.move_right, "d")
+
+        # Add cars
+        self.cars = {
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+            Car(),
+        }
 
     def update(self):
+        # Process level up
+        if self.player.ycor() > 250:
+            self.level.set(self.level.get() + 1)
+            self.player.respawn()
+            for car in self.cars:
+                car.respawn()
+
+        # Move cars
+        for car in self.cars:
+            car.move(self.level.get())
+
         # Update the screen
         self.screen.update()
+
         # Exit the game
         # self.running = False
 
