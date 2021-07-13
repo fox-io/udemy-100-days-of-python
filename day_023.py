@@ -14,6 +14,15 @@ class Player(Turtle):
         self.penup()
         self.goto(0, -250)
 
+    def move_forward(self):
+        self.goto(self.xcor(), self.ycor() + 20)
+
+    def move_left(self):
+        self.goto(self.xcor() - 20, self.ycor())
+
+    def move_right(self):
+        self.goto(self.xcor() + 20, self.ycor())
+
 
 class Level(Turtle):
     def __init__(self):
@@ -58,11 +67,17 @@ class TurtleCrossing:
         # Add player
         self.player = Player()
 
+        # Add keybinds
+        self.screen.listen()
+        self.screen.onkey(self.player.move_forward, "w")
+        self.screen.onkey(self.player.move_left, "a")
+        self.screen.onkey(self.player.move_right, "d")
+
     def update(self):
         # Update the screen
         self.screen.update()
         # Exit the game
-        self.running = False
+        # self.running = False
 
 
 def main():
